@@ -75,7 +75,7 @@ class MovieScriptGenerator:
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
         self.openai_model_name = os.getenv('OPENAI_MODEL_NAME')
         self.movie_dir = None
-        self.enable_video = True  # Flag to enable/disable video generation
+        self.enable_video = False  # Default to False - just generate script
         self.video_style = os.getenv('VIDEO_STYLE', 'Infinite Zoom')  # Default video style
         
     def create_agents(self):
@@ -278,12 +278,17 @@ class MovieScriptGenerator:
             f.write(content)
         return filepath
 
-    def run(self):
+    def run(self, input_text=None):
+        """Generate script only (without video) based on optional input text"""
         # Create agents
         story_writer, character_designer, scene_designer, music_designer, narrator, title_generator, result_saver = self.create_agents()
         
         # Create tasks
         tasks = self.create_tasks(story_writer, character_designer, scene_designer, music_designer, narrator, title_generator)
+        
+        # If input text is provided, modify the first task's description
+        if input_text:
+            tasks[0].description += f"\n\nPlease use the following input as inspiration for your script:\n{input_text}"
         
         # Create crew and execute
         crew = Crew(
@@ -311,41 +316,80 @@ class MovieScriptGenerator:
         result_saver.set_movie_dir(self.movie_dir)
         
         # Save results using ResultSaver agent
+        script_path = None
         for task in tasks:
             if task.output is not None:  # Only save if there's output
-                result_saver.save_result(
+                file_path = result_saver.save_result(
                     movie_timestamp=current_time,
                     agent_role=task.agent.role,
                     content=task.output
                 )
+                # Store the narrator's output path
+                if task.agent.role == 'Narrator':
+                    script_path = file_path
         
-        # Generate video if enabled
-        if self.enable_video:
-            # Find the narrator's output to use as the script
-            narrator_output = None
-            for task in tasks:
-                if task.agent.role == 'Narrator' and task.output is not None:
-                    narrator_output = str(task.output)
-                    break
-            
-            if narrator_output:
-                # Define output path for the video
-                video_output_path = os.path.join(self.movie_dir, f"{safe_title}.mp4")
-                
-                # Create data directory if it doesn't exist
-                os.makedirs("data", exist_ok=True)
-                
-                # Call the video generation pipeline
-                try:
-                    print(f"Generating video with style: {self.video_style}")
-                    pipeline(narrator_output, video_output_path, self.video_style)
-                    print(f"Video generated successfully: {video_output_path}")
-                except Exception as e:
-                    print(f"Error generating video: {str(e)}")
+        # Return the path to the generated script
+        return {
+            "movie_dir": self.movie_dir,
+            "script_path": script_path,
+            "title": movie_title,
+            "safe_title": safe_title
+        }
+    
+    def generate_video_from_script(self, script_path, video_style=None):
+        """Generate a video from an existing script file"""
+        if not os.path.exists(script_path):
+            raise FileNotFoundError(f"Script file not found: {script_path}")
         
-        return result
+        # Read the script file
+        with open(script_path, 'r') as f:
+            script_content = f.read()
+        
+        # Determine the movie directory and title from the script path
+        movie_dir = os.path.dirname(script_path)
+        base_filename = os.path.basename(script_path).split('.')[0]
+        
+        # If base_filename is "narration", try to find a title file
+        title_file = os.path.join(movie_dir, "title.txt")
+        if os.path.exists(title_file):
+            with open(title_file, 'r') as f:
+                movie_title = f.read().strip()
+            safe_title = "".join(c for c in movie_title if c.isalnum() or c in (' ', '-', '_')).strip()
+            safe_title = safe_title.replace(' ', '_')
+        else:
+            # Use a default title based on timestamp
+            current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_title = f"video_{current_time}"
+        
+        # Define video style
+        if video_style is None:
+            video_style = self.video_style
+        
+        # Define output path for the video
+        video_output_path = os.path.join(movie_dir, f"{safe_title}.mp4")
+        
+        # Create data directory if it doesn't exist
+        os.makedirs("data", exist_ok=True)
+        
+        # Call the video generation pipeline
+        try:
+            print(f"Generating video with style: {video_style}")
+            pipeline(script_content, video_output_path, video_style)
+            print(f"Video generated successfully: {video_output_path}")
+            return video_output_path
+        except Exception as e:
+            print(f"Error generating video: {str(e)}")
+            raise
 
 if __name__ == "__main__":
+    # Example of using the two-step process
     generator = MovieScriptGenerator()
-    result = generator.run()
-    print(result)
+    
+    # Step 1: Generate script only (optionally with input text)
+    result = generator.run(input_text="A story about friendship and adventure")
+    print(f"Script generated at: {result['script_path']}")
+    
+    # Step 2: Generate video from the script
+    if result['script_path']:
+        video_path = generator.generate_video_from_script(result['script_path'])
+        print(f"Video generated at: {video_path}")
