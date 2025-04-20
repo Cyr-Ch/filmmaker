@@ -1,0 +1,22 @@
+# Main dependencies
+crewai==0.5.0  # Pinning to a specific version that works with our modifications
+litellm>=1.15.0  # Adapter that makes newer OpenAI SDK work with older libraries
+openai>=1.35.0
+python-dotenv
+requests
+fastapi
+uvicorn
+
+# Video generation
+pillow
+moviepy
+replicate>=0.27.0
+imageio>=2.34.2
+imageio-ffmpeg>=0.5.1
+numpy>=1.24.0,<2.0.0  # Downgraded to be compatible with langchain
+proglog>=0.1.10
+
+# Optional dependencies that improve compatibility
+pydantic>=2.7.0
+annotated-types>=0.7.0
+typing_extensions>=4.12.0

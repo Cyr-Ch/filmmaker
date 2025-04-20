@@ -1,14 +1,14 @@
-from .prompt_to_stock_video import prompt_to_stock_video
-from .prompt_to_video import prompt_to_video, find_model
-from .script_to_prompt import gpt_step_0, gpt_step_1
+from prompt_to_stock_video import prompt_to_stock_video
+from prompt_to_video import prompt_to_video, find_model
+from script_to_prompt import gpt_step_0, gpt_step_1
 import json
 import os
 import warnings
 import shutil
 import tempfile
 
-from .script_snippet_to_audio import extract_text_list, generate_speech_and_transcription
-from .audio_video import combine_video_audio, combine_videos
+from script_snippet_to_audio import extract_text_list, generate_speech_and_transcription
+from audio_video import combine_video_audio, combine_videos
 
 # Example script for testing
 SCRIPT = "In a world where efficient travel and remote living were becoming increasingly important, a group of savvy globetrotters shared their secrets for streamlining life on the go. Nathalie introduced Earth Class Mail, a service that digitized physical mail, allowing nomads to manage their correspondence from anywhere. Andrew chimed in, adding that he used GreenByPhone to process checks electronically, creating a seamless financial system across different states. A seasoned female traveler and new mom then offered her insights, recommending quick-dry, versatile clothing from Athleta, and essential gadgets like a portable sound machine for better sleep on the road. She didn't stop there, sharing her must-haves for traveling with a baby, including a comfortable sling and a portable tent that doubled as a familiar sleep space. The conversation concluded with tips on navigating air travel with little ones, from choosing the right carry-on size to keeping babies comfortable during takeoff and landing. These modern adventurers had cracked the code to effortless, family-friendly globe-trotting, turning the dream of a flexible, location-independent lifestyle into a reality."
@@ -199,4 +199,4 @@ def pipeline(script, output_path, style):
         return create_fallback_video(script, output_path)
 
 # For testing
-# pipeline(SCRIPT, "../data/output.mp4")
+pipeline(SCRIPT, "../data/output.mp4", "Anime")

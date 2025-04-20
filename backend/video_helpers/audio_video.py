@@ -1,6 +1,6 @@
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, ImageClip, CompositeVideoClip
 
-from .overlay_text_on_video import subtitles_main
+from overlay_text_on_video import subtitles_main
 
 def crop_and_resize(video,target_width=1080,target_height=1350):
     # Resize if necessary

@@ -15,7 +15,7 @@ TEST_SCRIPT= [
 ]
 
 def find_model(style):
-    f = open("./web/src/video-style-options.json")
+    f = open("video-style-options.json")
     style_json = json.load(f)
     print('Video style json file loaded successfully!')
     for model in style_json:

@@ -41,10 +41,28 @@ else:
 
 def gpt_step_0(script):
     """Break script into sections"""
+    # Locate the .env file
+    print("Loading environment variables...")
+    dotenv_path = find_dotenv()
+    load_dotenv(dotenv_path)
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    REPLICATE_API_TOKEN = os.getenv('REPLICATE_API_TOKEN')    
+    # Initialize OpenAI client if API key is available
+    client = None
+    if OPENAI_API_KEY:
+        try:
+            from openai import OpenAI
+            client = OpenAI()
+        except ImportError:
+            warnings.warn("OpenAI package not installed. Mock responses will be used.")
+    else:
+        warnings.warn("OpenAI API key not found. Mock responses will be used.")
+    print("Initializing OpenAI client...")
+    print(OPENAI_API_KEY)
     if client:
         try:
             response = client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o",
                 messages=[
                     {
                         "role": "user",
@@ -66,10 +84,28 @@ def gpt_step_0(script):
 
 def gpt_step_1(code, prompt):
     """Add prompts to each section"""
+    # Locate the .env file
+    print("Loading environment variables...")
+    dotenv_path = find_dotenv()
+    load_dotenv(dotenv_path)
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    REPLICATE_API_TOKEN = os.getenv('REPLICATE_API_TOKEN')    
+    # Initialize OpenAI client if API key is available
+    client = None
+    if OPENAI_API_KEY:
+        try:
+            from openai import OpenAI
+            client = OpenAI()
+        except ImportError:
+            warnings.warn("OpenAI package not installed. Mock responses will be used.")
+    else:
+        warnings.warn("OpenAI API key not found. Mock responses will be used.")
+    print("Initializing OpenAI client...")
+    print(OPENAI_API_KEY)
     if client:
         try:
             response = client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o",
                 messages=[
                     {
                         "role": "user",
