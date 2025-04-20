@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@heygen/streaming-avatar": "^2.0.13"
+  }
+}
