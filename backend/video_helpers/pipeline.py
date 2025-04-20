@@ -199,4 +199,4 @@ def pipeline(script, output_path, style):
         return create_fallback_video(script, output_path)
 
 # For testing
-pipeline(SCRIPT, "../data/output.mp4", "Anime")
+pipeline(SCRIPT, "../data/output.mp4")
