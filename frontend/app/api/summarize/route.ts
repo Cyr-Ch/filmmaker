@@ -18,8 +18,8 @@ export async function POST(request: Request) {
 
     // Build the prompt with context for the summary
     const prompt = `
-    Please provide a concise summary of the following blog content.
-    The summary should capture the main points and key insights.
+    Please provide a concise summary of the following content.
+    The summary should capture the main points and key insights. You should write it from the view point of the writer of the post. Use the pronoun "I" to refer to the writer and "you" to refer to the reader. Do not mention that this is a summary. But make it sound like you are talking to the reader.
     
     ${notes ? `Additional instructions: ${notes}` : ''}
     

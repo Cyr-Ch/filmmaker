@@ -5,7 +5,7 @@ import { ArrowRight, FileVideo, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import ExampleVideo from "@/components/example-video"
-import BlogToVideoForm from "@/components/blog-to-video-form"
+import BlogSummaryForm from "@/components/blog-to-video-form"
 
 export default function Home() {
   return (
@@ -129,7 +129,7 @@ export default function Home() {
                 </ul>
               </div>
               <div className="mx-auto w-full max-w-md">
-                <BlogToVideoForm />
+                <BlogSummaryForm />
               </div>
             </div>
           </div>
