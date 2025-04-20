@@ -1,0 +1,27 @@
+[
+  {
+      "name": "Internet Videos",
+      "prompt": "Each 'text' section in the following code is a part of a script. Come up a unique scene for each section."
+  },
+  {
+      "name": "Infinite Zoom",
+      "model": "arielreplicate/stable_diffusion_infinite_zoom:a2527c5074fc0cf9fa6015a40d75d080d1ddf7082fabe142f1ccd882c18fce61",
+      "prompt": "Each 'text' section in the following code is a part of a script. Come up a unique scene for each section. These should be place-specific scenes, such as the middle aisle of an airplane, a path through a tropical jungle, or the middle of a city street surrounded by high-rises. Write a short succinct clear prompt (max 9 words) to generate each video.",
+      "modelInput": {
+          "inpaint_iter": 3
+      }
+  },
+  {
+      "name": "Anime",
+      "model": "lucataco/animate-diff:beecf59c4aee8d81bf04f0381033dfa10dc16e845b4ae00d281e2fa377e48a9f",
+      "prompt": "Each 'text' section in the following code is a part of a script. Each prompt should be a series of adjectives of a concrete object(such as a place or a person), such as'masterpiece, best quality, 1girl, solo, cherry blossoms, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, white hair, black eyes'. Write a clear prompt (at least 18 words) to generate each video.",
+      "modelInput": {
+          "path": "toonyou_beta3.safetensors",
+          "seed": 255224557,
+          "steps": 10,
+          "n_prompt": "badhandv4, easynegative, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, bad-artist, bad_prompt_version2-neg, teeth",
+          "motion_module": "mm_sd_v14",
+          "guidance_scale": 7.5
+      }
+  }
+]

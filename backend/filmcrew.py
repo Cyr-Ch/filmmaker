@@ -5,6 +5,7 @@ from textwrap import dedent
 from datetime import datetime
 from typing import Any
 from pydantic import BaseModel
+from video_helpers.pipeline import pipeline
 
 # Load environment variables
 load_dotenv()
@@ -74,6 +75,8 @@ class MovieScriptGenerator:
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
         self.openai_model_name = os.getenv('OPENAI_MODEL_NAME')
         self.movie_dir = None
+        self.enable_video = True  # Flag to enable/disable video generation
+        self.video_style = os.getenv('VIDEO_STYLE', 'Infinite Zoom')  # Default video style
         
     def create_agents(self):
         # Story Writer Agent
@@ -315,6 +318,30 @@ class MovieScriptGenerator:
                     agent_role=task.agent.role,
                     content=task.output
                 )
+        
+        # Generate video if enabled
+        if self.enable_video:
+            # Find the narrator's output to use as the script
+            narrator_output = None
+            for task in tasks:
+                if task.agent.role == 'Narrator' and task.output is not None:
+                    narrator_output = str(task.output)
+                    break
+            
+            if narrator_output:
+                # Define output path for the video
+                video_output_path = os.path.join(self.movie_dir, f"{safe_title}.mp4")
+                
+                # Create data directory if it doesn't exist
+                os.makedirs("data", exist_ok=True)
+                
+                # Call the video generation pipeline
+                try:
+                    print(f"Generating video with style: {self.video_style}")
+                    pipeline(narrator_output, video_output_path, self.video_style)
+                    print(f"Video generated successfully: {video_output_path}")
+                except Exception as e:
+                    print(f"Error generating video: {str(e)}")
         
         return result
 
