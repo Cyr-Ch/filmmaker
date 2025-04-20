@@ -14,13 +14,13 @@ import {
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
-// Update the GeneratedContent interface to remove tone and add videoNotes
+// Update the GeneratedContent interface to reflect summary
 interface GeneratedContent {
   script: string
   videoNotes: string
 }
 
-interface ScriptModalProps {
+interface SummaryModalProps {
   isOpen: boolean
   onClose: () => void
   content: GeneratedContent
@@ -28,37 +28,37 @@ interface ScriptModalProps {
   onGenerate: () => void
 }
 
-export function ScriptModal({ isOpen, onClose, content, setContent, onGenerate }: ScriptModalProps) {
+export function ScriptModal({ isOpen, onClose, content, setContent, onGenerate }: SummaryModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Customize Your Video</DialogTitle>
+          <DialogTitle>Review Your Summary</DialogTitle>
           <DialogDescription>
-            Review and edit the generated script, then add any notes for the video creation process
+            Review and edit the generated summary, then add any notes if needed
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="script">Script</Label>
+            <Label htmlFor="script">Summary</Label>
             <Textarea
               id="script"
               className="min-h-[200px]"
               value={content.script}
               onChange={(e) => setContent({ ...content, script: e.target.value })}
             />
-            <p className="text-xs text-muted-foreground">Edit the script to match your desired content and flow</p>
+            <p className="text-xs text-muted-foreground">Edit the summary to match your desired content</p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="video-notes">Notes for Video Generation</Label>
+            <Label htmlFor="video-notes">Additional Notes</Label>
             <Textarea
               id="video-notes"
-              placeholder="Add any specific instructions for the video generation (style, pacing, visuals, etc.)..."
+              placeholder="Add any additional notes or feedback..."
               value={content.videoNotes}
               onChange={(e) => setContent({ ...content, videoNotes: e.target.value })}
             />
             <p className="text-xs text-muted-foreground">
-              These notes will guide how your video is created from the script
+              These notes will be saved along with your summary
             </p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function ScriptModal({ isOpen, onClose, content, setContent, onGenerate }
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={onGenerate}>Generate Video</Button>
+          <Button onClick={onGenerate}>Save Summary</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

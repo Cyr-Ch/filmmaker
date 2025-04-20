@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { ScriptModal } from "@/components/script-modal"
 import { VideoPreview } from "@/components/video-preview"
 
-export default function BlogToVideoForm() {
+export default function BlogSummaryForm() {
   const [blogContent, setBlogContent] = useState("")
   const [customNotes, setCustomNotes] = useState("")
   const [isLoading, setIsLoading] = useState(false)
