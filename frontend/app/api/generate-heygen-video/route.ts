@@ -6,7 +6,7 @@ const HEYGEN_API_URL = "https://api.heygen.com/v2/video/generate";
 
 // Default values - consider making these configurable if needed
 const AVATAR_ID = "Brandon_expressive_public"; // As requested
-const VOICE_ID = "1bd001e7e50f421d891986aad5158bc8"; // Default from docs
+const VOICE_ID = "fabf3d28753a4d7691d51bbf87d697fb";
 
 export async function POST(request: Request) {
     // Remove diagnostic log as key is now hardcoded
