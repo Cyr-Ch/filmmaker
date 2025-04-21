@@ -29,3 +29,4 @@ pnpm-debug.log*
 
 # Frontend_old (already present)
 frontend_old
+.env
